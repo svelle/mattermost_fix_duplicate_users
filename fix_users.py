@@ -16,7 +16,7 @@ else:
 # List of users in the export from the new server
 new_users = {}
 
-with jsonlines.open('new.json') as new_reader:
+with jsonlines.open(new_file) as new_reader:
     for obj in new_reader:
         if obj['type'] == 'user':
             new_users[obj['user']['email']] = obj['user']
@@ -28,7 +28,7 @@ users = []
 # list with all the users that need to be changed
 users_to_replace = []
 
-with jsonlines.open('old.json') as old_reader:
+with jsonlines.open(old_file) as old_reader:
     for obj in old_reader:
         if obj['type'] == 'user':
             user = obj['user']
@@ -56,7 +56,7 @@ new_export = []
 # flag for checking if the users have already been added to the new file
 users_added = False
 
-with jsonlines.open('old.json') as old_reader:
+with jsonlines.open(old_file) as old_reader:
     for obj in old_reader:
         if obj['type'] != 'team' and obj['type'] != 'user' and obj['type'] != 'channel' and obj['type'] != 'version':
             line = str(obj)
