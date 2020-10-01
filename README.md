@@ -11,9 +11,9 @@ This script should never overwrite any existing exports. However it is strongly 
 
 ## Setup
 
-This script assumes python3 and pip is installed.
+This script assumes python3 and pip3 is installed.
 
-`pip install -r requirements.txt`
+`pip3 install -r requirements.txt`
 
 ## Usage
 
