@@ -28,9 +28,12 @@ users = []
 # list with all the users that need to be changed
 users_to_replace = []
 
+old_users = {}
+
 with jsonlines.open(old_file) as old_reader:
     for obj in old_reader:
         if obj['type'] == 'user':
+            old_users[obj['user']['email']] = obj['user']
             user = obj['user']
             if user['email'] in new_users:
                 if new_users[user['email']]:
@@ -50,6 +53,8 @@ with jsonlines.open(old_file) as old_reader:
                         users.append(replace)
                     else:
                         users.append(obj)
+            else:
+                users.append(obj)
 
 
 # list to contain all lines for the new file
