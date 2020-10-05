@@ -48,6 +48,10 @@ with jsonlines.open(old_file) as old_reader:
                         if user['auth_service'] is not None:
                             replace['user']['auth_data'] = new_user['auth_data']
                             fixed_users[user['username']].update({"auth_data": new_user['auth_data']})
+                        if user['auth_service'] is None and user['auth_data'] is not None:
+                            replace['user']['auth_data'] = user['auth_data']
+                            replace['user']['auth_service'] = 'ldap'
+                            fixed_users[user['username']].update({"auth_data": user['auth_data']})
                         users_to_replace.append(replace['user']['username'])
                         replace['user']['username'] = new_user['username']
                         users.append(replace)
