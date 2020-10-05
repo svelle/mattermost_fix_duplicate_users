@@ -32,23 +32,24 @@ with jsonlines.open(old_file) as old_reader:
     for obj in old_reader:
         if obj['type'] == 'user':
             user = obj['user']
-            if new_users[user['email']]:
-                if user['username'] != new_users[user['email']]['username']:
-                    new_user = new_users[user['email']]
-                    fixed_users[user['username']] = {"new_username": new_user['username'],
-                                                     "old_username": user['username'],
-                                                     "email": user['email'],
-                                                     "auth_service": new_user['auth_service']}
-                    replace = obj.copy()
-                    replace['user']['auth_service'] = new_user['auth_service']
-                    if user['auth_service'] is not None:
-                        replace['user']['auth_data'] = new_user['auth_data']
-                        fixed_users[user['username']].update({"auth_data": new_user['auth_data']})
-                    users_to_replace.append(replace['user']['username'])
-                    replace['user']['username'] = new_user['username']
-                    users.append(replace)
-                else:
-                    users.append(obj)
+            if user['email'] in new_users:
+                if new_users[user['email']]:
+                    if user['username'] != new_users[user['email']]['username']:
+                        new_user = new_users[user['email']]
+                        fixed_users[user['username']] = {"new_username": new_user['username'],
+                                                         "old_username": user['username'],
+                                                         "email": user['email'],
+                                                         "auth_service": new_user['auth_service']}
+                        replace = obj.copy()
+                        replace['user']['auth_service'] = new_user['auth_service']
+                        if user['auth_service'] is not None:
+                            replace['user']['auth_data'] = new_user['auth_data']
+                            fixed_users[user['username']].update({"auth_data": new_user['auth_data']})
+                        users_to_replace.append(replace['user']['username'])
+                        replace['user']['username'] = new_user['username']
+                        users.append(replace)
+                    else:
+                        users.append(obj)
 
 
 # list to contain all lines for the new file
